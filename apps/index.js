@@ -6,5 +6,7 @@ module.exports = angular.module('main.apps', [
   require('./st2-history').name,
   require('./st2-login').name,
   require('./st2-rules').name,
-  require('./st2-packs').name
+  require('./st2-packs').name,
+  require('./st2-traces').name,
+  require('./st2-event').name
 ]);

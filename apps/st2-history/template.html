@@ -11,8 +11,14 @@
 
       <div class="st2-panel__toolbar-filters"
           ng-show="filters">
+        <!--添加时间-->
+              <div class="layui-input-inline">
+                时间查询：
+                <input st2-rerun  class="layui-input" id="test16"  ng-model="time"  ng-change="change()">
+                <input type="button" value="提交" id='test17'ng-click="getData()">
+              </div>
         <div class="st2-filter" items="filters['status']" active-items="active_filters['status']"
-             label="Status" on-change="$root.updateFiltersAndGo('status', activeItems)"
+             label="Status" on-change="$root.updateFiltersAndGo('status', activeItsems)"
              ng-if="!_.isEmpty(filters['status'])"></div>
         <div class="st2-filter" items="filters['action']" active-items="active_filters['action']"
              label="Action" on-change="$root.updateFiltersAndGo('action', activeItems)"
@@ -192,7 +198,7 @@
     </div>
 
   </div>
-
+<!--right-->
   <div class="st2-panel__details st2-details"
       data-test="details"
       ng-show="record">

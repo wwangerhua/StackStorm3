@@ -1,0 +1,277 @@
+<header class="st2-menu"></header>
+
+<main class="st2-panel" data-test="traces_panel">
+
+    <div class="st2-panel__view st2-traces" cg-busy="busy">
+
+        <div class="st2-panel__toolbar">
+            <div class="st2-panel__toolbar-title">
+                Traces
+            </div>
+            <div class="st2-panel__toolbar-toggle-all"
+                 ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('traces')}"
+                 ng-click="toggleFlexTables('traces')"></div>
+        </div>
+    </div>
+
+    <div class="st2-panel__details st2-details"
+         data-test="details"
+         ng-show="record">
+
+        <div class="st2-details__header">
+            <div class="st2-details__header-name" data-test="header_name">
+                <a ui-sref="actions.general({ref:record.action.ref})">
+                    {{ record.action && record.action.ref }}
+                </a>
+            </div>
+            <div class="st2-details__header-description" data-test="header_description">
+                {{ record.action.description }}
+            </div>
+        </div>
+
+        <div class="st2-details__switch st2-details__switch--of-two"
+             ng-class="{
+          'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+          'st2-details__switch--second': $root.isState('^.code')
+        }">
+            <div class="st2-details__switch-item"
+                 ng-click="$root.go('^.general', {id: record.id})">
+                General
+            </div>
+            <div class="st2-details__switch-item"
+                 ng-click="$root.go('^.code', {id: record.id})">
+                Code
+            </div>
+        </div>
+
+        <div class="st2-details__body"
+             ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
+
+            <div class="st2-panel__scroller">
+                <div class="st2-details__panel">
+                    <div class="st2-action-reporter__header">
+                        <div class="st2-details__panel-body">
+                            <dl class="st2-details__panel-body-line">
+                                <dt class="st2-details__panel-body-label">
+                                    Status:
+                                </dt>
+                                <dd class="st2-details__panel-body-value">
+                                    <span class="st2-label" status="record.status" data-test="status"></span>
+                                </dd>
+                            </dl>
+                            <dl class="st2-details__panel-body-line">
+                                <dt class="st2-details__panel-body-label">
+                                    Execution ID:
+                                </dt>
+                                <dd class="st2-details__panel-body-value">
+                                    <div class="st2-action-reporter__uuid"
+                                         contenteditable="true"
+                                         data-test="execution_id"
+                                         select-on-click>
+                                        {{ record.id }}
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="st2-details__panel-body-line"
+                                ng-if="record.context.trace_context.trace_tag">
+                                <dt class="st2-details__panel-body-label">
+                                    Trace Tag:
+                                </dt>
+                                <dd class="st2-details__panel-body-value">
+                                    <div class="st2-action-reporter__uuid"
+                                         contenteditable="true"
+                                         select-on-click>
+                                        {{ record.context.trace_context.trace_tag }}
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="st2-details__panel-body-line">
+                                <dt class="st2-details__panel-body-label">
+                                    Started:
+                                </dt>
+                                <dd class="st2-details__panel-body-value">
+                                    <div class="st2-time"
+                                         timestamp="record.start_timestamp"
+                                         dataTest="'start_timestamp'"
+                                         utcdisplay="utcDisplay"
+                                         togglecallback="toggleUTCDisplay"
+                                    ></div>
+                                </dd>
+                            </dl>
+                            <dl class="st2-details__panel-body-line">
+                                <dt class="st2-details__panel-body-label">
+                                    Finished:
+                                </dt>
+                                <dd class="st2-details__panel-body-value">
+                                    <div class="st2-time"
+                                         timestamp="record.end_timestamp"
+                                         dataTest="'end_timestamp'"
+                                         utcdisplay="utcDisplay"
+                                         togglecallback="toggleUTCDisplay"
+                                    ></div>
+                                </dd>
+                            </dl>
+                            <dl class="st2-details__panel-body-line"
+                                ng-show="record.execution_time">
+                                <dt class="st2-details__panel-body-label">
+                                    Execution time:
+                                </dt>
+                                <dd class="st2-details__panel-body-value">
+                  <span class="st2-action-reporter__time"
+                        data-test="execution_time">
+                    {{ record.execution_time }} s
+                  </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="st2-details__panel-heading">
+                        <h2 class="st2-details__panel-title">Action Output</h2>
+                    </div>
+
+                    <div class="st2-details__panel-body">
+                        <div class="st2-action-reporter"
+                             data-test="action_output"
+                             runner="record.runner.name"
+                             execution="record"></div>
+                    </div>
+                </div>
+
+                <div class="st2-details__panel"
+                     ng-show="record.rule">
+                    <div class="st2-details__panel-heading">
+                        <h2 class="st2-details__panel-title">Rule Details</h2>
+                    </div>
+                    <div class="st2-details__panel-body">
+                        <dl class="st2-details__panel-body-line">
+                            <dt class="st2-details__panel-body-label"
+                                ng-if="record.rule.ref">
+                                Rule
+                            </dt>
+                            <dd class="st2-details__panel-body-value"
+                                ng-if="record.rule.ref">
+                                <a ui-sref="rules.general({ref: record.rule.ref})">
+                                    {{ record.rule.ref }}
+                                </a>
+                            </dd>
+                        </dl>
+                        <dl class="st2-details__panel-body-line">
+                            <dt class="st2-details__panel-body-label"
+                                ng-if="record.rule.description">
+                                Rule Description
+                            </dt>
+                            <dd class="st2-details__panel-body-value"
+                                ng-if="record.rule.description">
+                                {{ record.rule.description }}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="st2-details__panel"
+                     ng-show="record.trigger">
+                    <div class="st2-details__panel-heading">
+                        <h2 class="st2-details__panel-title">Trigger Details</h2>
+                    </div>
+                    <div class="st2-details__panel-body">
+                        <dl class="st2-details__panel-body-line">
+                            <dt class="st2-details__panel-body-label"
+                                ng-if="record.trigger.type">
+                                Trigger
+                            </dt>
+                            <dd class="st2-details__panel-body-value"
+                                ng-if="record.trigger.type">
+                                {{ record.trigger.type }}
+                            </dd>
+                        </dl>
+                        <dl class="st2-details__panel-body-line">
+                            <dt class="st2-details__panel-body-label"
+                                ng-if="record.trigger_instance.occurrence_time">
+                                Occurrence
+                            </dt>
+                            <dd class="st2-details__panel-body-value"
+                                ng-if="record.trigger_instance.occurrence_time">
+                                <div class="st2-time"
+                                     timestamp="record.trigger_instance.occurrence_time"
+                                     utcdisplay="utcDisplay"
+                                     togglecallback="toggleUTCDisplay"
+                                ></div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="st2-details__panel-body">
+                        <div class="st2-highlight" code="record.trigger_instance.payload | json"
+                             language="json"></div>
+                    </div>
+                </div>
+
+                <div class="st2-details__panel">
+                    <div class="st2-details__panel-heading">
+                        <h2 class="st2-details__panel-title">Action Input</h2>
+                    </div>
+                    <div class="st2-details__panel-body">
+                        <form role="form" class="st2-details__form">
+                            <div class="st2-auto-form"
+                                 key="record.action.ref"
+                                 data-test="action_input"
+                                 watch-depth="reference"
+                                 spec="actionSpec"
+                                 disabled="true"
+                                 ng-model="payload">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="st2-details__body"
+             ng-class="{'st2-details__body--active': $root.isState('^.code')}">
+            <div class="st2-panel__scroller">
+
+                <div class="st2-details__panel">
+                    <div class="st2-details__panel-body">
+                        <div class="st2-highlight"
+                             data-test="record_code"
+                             code="record | json"
+                             lines="20"
+                             language="json">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="st2-details__toolbar">
+            <input type="button"
+                   class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+                   data-test="rerun_button"
+                   ng-click="rerun.open()"
+                   value="Rerun"/>
+
+            <input type="button"
+                   class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+                   ng-click="cancel()"
+                   ng-disabled="record.status != 'running'"
+                   value="Cancel"/>
+
+            <div class="st2-details__toolbar-separator"></div>
+        </div>
+
+    </div>
+
+</main>
+
+<div class="st2-rerun"
+     ng-if="$root.isState('^.rerun')"
+     action="record.action.ref"
+     spec="actionSpec"
+     payload="payload"
+     on-submit="rerun.submit"
+     on-cancel="rerun.cancel">
+</div>
+
+<div class="st2-report"></div>

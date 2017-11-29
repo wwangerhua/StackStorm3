@@ -4,7 +4,8 @@ var _ = require('lodash')
   ;
 
 module.exports =
-  function st2HistoryCtrl($scope, st2api, $rootScope, Notification) {
+  function st2HistoryCtrl($scope, st2api, $rootScope, Notification, $http) {
+
 
     $scope.utcDisplay = localStorage.utcDisplay === 'true';
 
@@ -300,5 +301,29 @@ module.exports =
           Notification.criticalError(err, 'Failed to cancel execution');
         });
     };
+
+          $scope.getData=function () {
+              var input = document.getElementById('test16');
+              var string = input.value;
+              var time = string.slice(0,16);
+              var time1 = string.slice(18,35);
+              var date = new Date(time);
+              var date1 = new Date(time1);
+              var start = date.getTime();
+              var end = date1.getTime();
+              var lt =start.toString();
+              var gt =end.toString();
+              $http({
+                  method: 'GET',
+                  params:{timestamp_lt:lt,timestamp_gt:gt},
+                  headers: {
+                      'X-Auth-Token': '0b30ca7e0a784220a74ed3822631e5b4',
+                      'Content-Type': 'application/x-www-form-urlencoded'
+                  },
+                  url: 'http://118.190.138.169/api/v1/executions'
+              }).then(function successCallback(response) {
+                  console.log(response);
+              });
+          };
 
   };

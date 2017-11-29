@@ -12,6 +12,6 @@ var rerun = require('./rerun.directive.js');
 mod
   .config(config)
   .directive(rerun.name, rerun)
-  .controller(controller.name, controller)
+  .controller(controller.name,controller)
   .filter(fmtParam.name, fmtParam)
   ;

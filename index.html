@@ -6,20 +6,19 @@
 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-
   <!-- buils:styles -->
   <link rel="stylesheet" href="css/style.css">
+
   <!-- endbuild -->
 
-  <!-- reamaze -->
   <script type="text/javascript" src="https://d3itxuyrq7vzpz.cloudfront.net/assets/reamaze.js"></script>
+  <!-- reamaze -->
   <script type="text/javascript">
     var _support = _support || { 'ui': {}, 'user': {} };
     _support['account'] = 'stackstorm';
     _support['ui']['lightbox_mode'] = 'kb';
   </script>
   <!-- end:reamaze -->
-
   <script src="node_modules/angular/angular.js"></script>
   <script src="node_modules/lodash/dist/lodash.js"></script>
   <script src="node_modules/st2client/dist/st2client.js"></script>
@@ -31,6 +30,25 @@
   <script src="js/apps.js"></script>
   <script src="js/main.js"></script>
   <script src="config.js"></script>
+  <script src="layui/layui.all.js"></script>
+  <script>
+      layui.use('laydate', function(){
+          var laydate = layui.laydate;
+          var ins1=laydate.render({
+              elem: '#test16'
+              ,type: 'datetime'
+              ,range: '—'
+              ,format: 'yyyy/MM/dd HH:mm'
+              ,change: function(value, date, endDate){
+                  ins1.hint(value)
+              }
+              ,done: function(value, date, endDate){
+                  var input = document.getElementById("test16");
+                  input.value=value;
+              }
+          });
+      });
+  </script>
 </head>
 
 <body>

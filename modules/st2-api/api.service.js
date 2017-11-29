@@ -17,7 +17,7 @@ module.exports =
           if (_.find(st2Config.hosts, {url: server.url})) {
             return server.url;
           } else {
-            return _.first(st2Config.hosts).url;
+            return _.first(st2Config.hosts[0]).url;
           }
         })();
 
